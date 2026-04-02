@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehnička dokumentacija - Maturski ispit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: #e8e8e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .test-header {
+            background: #2c3e66;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .test-header h1 {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+
+        .test-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .timer {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1a2a4a;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .timer.warning {
+            background: #c5221f;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .info-bar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 2px solid #2c3e66;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .info-item {
+            font-size: 16px;
+        }
+
+        .info-item strong {
+            color: #2c3e66;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            max-width: 300px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 12px;
+            align-self: center;
+        }
+
+        .progress-fill {
+            background: #2c3e66;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-card {
+            background: white;
+            margin: 20px 0;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .question-num {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e66;
+        }
+
+        .question-original-id {
+            font-size: 14px;
+            color: #888;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+
+        .question-points {
+            font-size: 18px;
+            font-weight: bold;
+            color: #c5221f;
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        .question-image {
+            text-align: center;
+            margin: 20px 0;
+            background: #fafaf8;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .question-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .image-placeholder {
+            color: #999;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .image-caption {
+            font-size: 11px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .matching-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .matching-table th, .matching-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .matching-table th {
+            background: #f0f4f8;
+            font-weight: bold;
+        }
+
+        .matching-table input {
+            width: 80px;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .matching-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .options-list {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .options-list h4 {
+            background: #f0f4f8;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .options-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .options-list li {
+            margin: 8px 0;
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .inputs-table {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .inputs-table h4 {
+            background: #f0f4f8;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .inputs-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inputs-table td {
+            padding: 10px 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .inputs-table input {
+            width: 80px;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .fill-text {
+            margin: 20px 0;
+            line-height: 2;
+            font-size: 16px;
+        }
+
+        .fill-text input {
+            width: 70px;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+
+        .options {
+            list-style: none;
+            margin: 20px 0 10px;
+        }
+
+        .options li {
+            margin: 12px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .options li:hover {
+            background: #f5f5f0;
+        }
+
+        .options input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #2c3e66;
+        }
+
+        .options input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .options label {
+            cursor: pointer;
+            line-height: 1.4;
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .answer-status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #2c3e66;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icon {
+            font-size: 16px;
+        }
+
+        /* Stil za obrazloženje nakon predaje */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #2c3e66;
+        }
+
+        .feedback.correct {
+            background: #e6f4ea;
+            border-left-color: #2e7d32;
+        }
+
+        .feedback.incorrect {
+            background: #fce8e6;
+            border-left-color: #c5221f;
+        }
+
+        .feedback strong {
+            font-size: 14px;
+        }
+
+        .feedback .answer-text {
+            font-size: 13px;
+            margin-top: 8px;
+            color: #555;
+        }
+
+        .action-buttons {
+            position: sticky;
+            bottom: 20px;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 30px 0 20px;
+        }
+
+        button {
+            background: #2c3e66;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #1a2a4a;
+            transform: scale(1.02);
+        }
+
+        .reset-btn {
+            background: #6c757d;
+        }
+
+        .reset-btn:hover {
+            background: #5a6268;
+        }
+
+        .submit-btn {
+            background: #2e7d32;
+        }
+
+        .submit-btn:hover {
+            background: #1b5e20;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .matching-hint {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .final-score {
+            background: #2c3e66;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .final-score span {
+            font-size: 28px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="test-header">
+        <h1>МАТУРСКИ ИСПИТ – ЕЛЕКТРОТЕХНИЧАР РАЧУНАРА</h1>
+        <p>Техничка документација | Случајних 20 питања</p>
+        <div class="timer" id="timerDisplay">10:00</div>
+    </div>
+
+    <div id="testContainer"></div>
+</div>
+
+<script>
+    // ==================== BAZA PITANJA IZ DOKUMENTA ====================
+    const QUESTIONS_DB = [
+        { id: 202, text: "Техничку документацију може да израђује:", options: ["лиценцирани инжењер одговарајуће струке", "дипломирани инжењер са положеним стручним испитом", "правно лице са радно ангажованим лиценцираним инжењером"], correct: [0], points: 1, type: "single", hasImage: false },
+        { id: 203, text: "Предмер и предрачун су делови:", options: ["опште документације", "графичке документације", "текстуалне документације", "нумеричке документације"], correct: [3], points: 1, type: "single", hasImage: false },
+        { id: 204, text: "За израду текстуалног дела користи се:", options: ["Excel", "Word", "Powerpoint"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 205, text: "Идејно решење користи се за:", options: ["изградњу објекта", "издавање локацијских услова", "издавање грађевинске дозволе"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 206, text: "Предмер и предрачун садржи:", options: ["све потребне радове и материјале", "само радове са ценом рада", "све потребне радове, потребне материјале са њиховим појединачним ценама и укупан износ"], correct: [2], points: 1, type: "single", hasImage: false },
+        { id: 207, text: "Понуда за извођење радова се даје на основу:", options: ["предмера и предрачуна", "техничких услова", "техничког описа"], correct: [0], points: 1, type: "single", hasImage: false },
+        { id: 208, text: "Комисију за технички преглед формира:", options: ["локална самоуправа", "инспектор рада", "инвеститор"], correct: [0], points: 1, type: "single", hasImage: false },
+        { id: 209, text: "Ако се при пројектовању врши умањење стварне величине хиљаду пута, правилан запис је:", options: ["1000:1", "1:1000", "1:1000:1", "1:1"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 210, text: "На техничком цртежу саставница је део:", options: ["радионичког цртежа", "шематског цртежа", "склопног цртежа"], correct: [0], points: 1, type: "single", hasImage: false },
+        { id: 211, text: "При котирању цртежа на папиру уносе се:", options: ["стварне мере", "мере на цртежу", "мере зависе од тога да ли је цртеж увећан или је умањен"], correct: [0], points: 1, type: "single", hasImage: false },
+        { id: 212, text: "Ако је у заглављу техничког цртежа написана размера 1 : 100 то представља:", options: ["величина у стварности : величина на цртежу", "величина на цртежу : величина увећања", "величина на цртежу : величина у стварности"], correct: [2], points: 1, type: "single", hasImage: false },
+        { id: 213, text: "Сервисна књижица не садржи:", options: ["план редовног одржавања", "спецификацију компоненти рачунарског система", "цену купљене опреме","план редовног одржавања","листу интервентних прегледа са описом интервенција"], correct: [2], points: 1, type: "single", hasImage: false },
+        { id: 214, text: "Шта представља спецификација рачунарских компонената?", options: ["прорачун цене коштања рачунарских компонената", "списак свих програма који су инсталирани", "детаљан технички опис рачунарских компонената"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 215, text: "За израду предмера и предрачуна најбоље је користити:", options: ["Word", "Excel", "PowerPoint", "Calculator"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 216, text: "Приликом цртања дела техничке документације појавила се потреба за креирањем новог симбола. Симбол је нацртан помоћу линија и стрелица различитих дебљина. Да би симбол могао поново да се користи у истом фајлу потребно је:", options: ["снимити тај фајл на радну површину", "груписати све елементе симбола", "обојити све елементе симбола црвено"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 217, text: "Адреса ћелије у којој је Диода Р6КЕ6,8СА је:", options: ["4C", "3.C", "C4", "24", "10"], correct: [2], points: 1, type: "single", hasImage: true, imageFile: "217.png" },
+        { id: 218, text: "Техничко лице које израђује документацију попунило је Excel документ о подацима радника у фирми. Након одређеног времена примећена је штампарска грешка: радник је написано радник на више места у документу. Најједноставније је преправити грешку опцијом у програму:", options: ["Sort & Filter", "Find & Select", "Merge & Center", "Wrap Text"], correct: [1], points: 1, type: "single", hasImage: false },
+        { id: 219, text: "Блок дијаграм рачунарског система у ком је подигнут домен контролер, креирани су корисници, групе, организационе јединице и полисе, најбоље је у програму Visio креирати помоћу темплејта:", options: ["Timeline", "Home Plan", "Block Diagram", "Active Directory", "Calendar"], correct: [3], points: 1, type: "single", hasImage: false },
+        { id: 220, text: "На Слици 1. приказано је стање табеле а на Слици 2. сортирање које ће бити примењено. Након сортирања табела ће изгледати онако како је представљено на слици:", options: ["Слици 3", "Слици 4", "Слици 5"], correct: [2], points: 2, type: "single", hasImage: true, imageFile: "220.png" },
+        { id: 221, text: "Један од наслова није се појавио унутар садржаја који је аутоматски генерисан за документ у Word-у. Узрок тог проблема је:", options: ["Аутоматско генерисање садржаја не ради исправно", "Фонт одабраних наслова није добро форматиран", "Наслов који недостаје није форматиран као наслов", "Положај наслова унутар странице није добро одабран"], correct: [2], points: 2, type: "single", hasImage: false },
+        { id: 222, text: "Анализом следећег текста: 'После сваке тачке, зареза и двотачке у тексту пише се размак ( један клик на SPACE тастер на тастатури ),након тога остатак текста.' утврђено је да текст није написан правилно. Да би текст био правилно написан потребно је болдован текст заменити следећим исправним форматом:", options: ["размак( један клик на SPACE тастер на тастатури ),након тога", "размак(један клик на SPACE тастер на тастатури), након тога", "размак ( један клик на SPACE тастер на тастатури  ), након тога", "размак (један клик на SPACE тастер на тастатури), након тога"], correct: [3], points: 2, type: "single", hasImage: false },
+        { id: 223, text: "Исправан начин преношења нацртаних објеката из програма за цртање (Visio) у програм за обраду текста (Word) је:", options: ["селектовати потребне објекте у програму за цртање, притиснути CTRL+V на тастатури, изабрати позицију објеката у програму за обраду текста, притиснути CTRL+C на тастатури", "селектовати потребне објекте у програму за цртање, притиснути CTRL+C на тастатури, изабрати позицију објеката у програму за обраду текста, притиснути CTRL+V на тастатури", "снимити фајл у програму за цртање, изабрати позицију објекта у програму за обраду текста и изабрати инсертовање фајла, изабрати снимљени фајл и притиснути CTRL+O"], correct: [1], points: 2, type: "single", hasImage: false },
+        { id: 224, text: "Објекат на слици је нацртан у размери 1:100. Међу понуђеним одговорима заокружити онај који представља дужину котне линије на слици. (3,2m у природи)", options: ["3,2cm", "0,32cm", "32cm", "0,32m"], correct: [0], points: 2, type: "single", hasImage: true,imageFile: "224.png" },
+        { id: 225, text: "Величина објекта приказаног на слици у природи је 14,5m x 10m. Објекат треба нацртати у размери 1:50. Потребно је одабрати следећу димензију папира:", options: ["A3", "A4", "A5", "B5"], correct: [1], points: 2, type: "single", hasImage: true,imageFile: "225.png" },
+        { id: 226, text: "На електричној шеми ако се положај потенциометра Р (вредност потенциометра 1 KOhm) из положаја 1 пребаци у положај 2. Шта се дешава са светлећом диодом D?", options: ["диода светли јачим интензитетом", "интензитет светлости диоде зависи од програма у микроконтролеру", "диода неће светлоти"], correct: [1], points: 3, type: "single", hasImage: true, imageFile: "226.png" },
+        { id: 227, text: "На приказаној шеми DIN је дигитални улаз микрорачунара. Шта се догађа када је тастер отворен?", options: ["Отпорник R на дигиталном улазу обезбеђује логичку „0“", "Отпорник R на дигиталном улазу обезбеђује логичку „1“", "Отпорник R на дигиталном улазу обезбеђује пад напона"], correct: [0], points: 3, type: "single", hasImage: true, imageFile: "227.png" },
+        { id: 228, text: "На приказаној шеми DIN је дигитални улаз микроконтролера. Шта се догађа када је тастер отворен?", options: ["Отпорник R на дигиталном улазу обезбеђује логичку „0“", "Отпорник R на дигиталном улазу обезбеђује логичку „1“", "Отпорник R на дигиталном улазу обезбеђује пад напона"], correct: [1], points: 3, type: "single", hasImage: true, imageFile: "228.png" },
+        { id: 229, text: "Сваки пројекат појединачне области састоји се од следећих делова:", options: ["општа документација", "идејна документација", "графичка документација", "текстуална документација", "нумеричка документација", "финансијска документација", "припремна документација", "завршна документација"], correct: [0,2,3,4], points: 2, type: "multiple", hasImage: false },
+        { id: 230, text: "Текстуални део пројекта чине:", options: ["основе објекта", "технички опис", "прорачуни", "технички услови"], correct: [1], points: 2, type: "multiple", hasImage: false },
+        { id: 231, text: "Идејно решење треба да садржи:", options: ["приказ планиране концепције објекта", "цртеже у размери 1:50", "шеме и детаље објекта", "врсту и намену грађевинског објекта"], correct: [3], points: 2, type: "multiple", hasImage: false },
+        { id: 232, text: "Електронски документ јесте документ настао изворно у електронској форми, у одговарајућем електронском формату који је електронски потписан квалификованим електронским потписом. Заокружи одговарајуће електронске формате који се односе на електронски документ.", options: [".pdf", ".dwg", ".dot", ".png", ".dwt", ".dwfx", ".ppt", ".jpg"], correct: [0,2,4,5], points: 2, type: "multiple", hasImage: false },
+        { id: 233, text: "У основне елементе техничког цртежа не спадају:", options: ["скица техничког цртежа", "оквир цртежа", "радни задатак", "заглавље"], correct: [2], points: 2, type: "multiple", hasImage: false },
+        { id: 234, text: "Које врсте инсталација у електротехници је потребно дефинисати у техничкој документацији?", options: ["електроенергетску инсталацију", "нумеричку документацију", "громобранску документацију", "идејну документацију", "телекомуникациону инсталацију", "сигналну документацију", "графичку документацију", "текстуалну документацију"], correct: [1,3,6,7], points: 2, type: "multiple", hasImage: false },
+        { id: 235, text: "За израду корисничког упутства треба користити:", options: ["LibreOffice Writer", "DaVinci Resolve", "HitFilm Express", "Microsoft Word", "Adobe Premier Rush", "Google Spreadsheets"], correct: [0,3], points: 2, type: "multiple", hasImage: false },
+        
+        { id: 236, text: "На слици је приказана котирана просторија. Димензије су написане у cm. Димензија просторије је ______ x ______ cm, ширина врата је ______ cm, ширина прозора је ______ cm, дебљина зида је ______ cm.",
+          blanks: ["243", "230", "106", "122", "10"], correct: ["243", "230", "106", "122", "10"], points: 3, type: "fill", hasImage: true, imageFile: "236.png" },
+        
+        { id: 237, text: "На извору једносмерног напона су током дужег временског периода вршена мерења излазног напона. Добијени резултати су представљени у табели. Колика је средња вредност излазног напона?", options: ["10V", "10,005V", "10,05V", "10,5V"], correct: [1], points: 2, type: "single", hasImage: true, imageFile: "237.png" },
+        { id: 238, text: "На извору једносмерног напона су током дужег временског периода вршена мерења излазног напона. Добијени резултати су представљени у табели. Колико износи напон при чијем мерењу је направљена највећа грешка?", options: ["10,4V", "9,6V", "10,1V", "10,3V"], correct: [2], points: 2, type: "single", hasImage: true, imageFile: "238.png" },
+        
+        { id: 239, text: "На слици су бројевима означени делови техничког цртежа. Упишите одговарајуће бројеве (1, 2, 3, 4) поред назива делова техничког цртежа.",
+          leftItems: ["Котни број", "Стрелица", "Котна линија", "Помоћна котна линија"],
+          correct: [4, 3, 2, 1], points: 2, type: "matching_old", hasImage: true, imageFile: "239.png" },
+        
+        { id: 240, text: "У табели су појединачно означени бројевима формати папира (1-A4, 2-A3, 3-A2, 4-A1, 5-A0). Упишите одговарајући број формата поред димензије папира.",
+          leftItems: ["841 x 1188", "297 x 420", "594 x 840", "420 x 594", "210 x 297"],
+          correct: [5, 2, 4, 3, 1], points: 2, type: "matching_old", hasImage: true,imageFile: "240.png"},
+        
+        { id: 241, text: "У табели су појединачно означени бројевима, врсте линија (1-Пуна дебела, 2-Пуна танка, 3-Испрекидана танка, 4-Црта-тачка-црта танка). Упишите одговарајући број линије поред њене намене.",
+          leftItems: ["Цртање заклоњених контура и ивица", "Осне линије, симетрале и путање", "Контуре и незаклоњене ивице", "Котне и помоћне линије, показне линије, линије шрафуре"],
+          correct: [3, 4, 1, 2], points: 2, type: "matching_old", hasImage: true, imageFile: "241.png" },
+        
+        { id: 242, text: "У табели су појединачно означени бројевима, симболи електричних компоненти. Упишите одговарајући број симбола (1, 2, 3) поред назива компоненте.",
+          leftItems: ["Зенер диода", "LE диода", "Фотодиода"],
+          correct: [2, 1, 3], points: 2, type: "matching_old", hasImage: true, imageFile: "242.png" },
+        
+        { id: 243, text: "У табели су појединачно означени бројевима, симболи електричних компоненти. Упишите одговарајући број симбола (1, 2, 3) поред назива компоненте.",
+          leftItems: ["Фототранзистор", "НПН транзистор", "ПНП транзистор"],
+          correct: [3, 1, 2], points: 2, type: "matching_old", hasImage: true, imageFile: "243.png" },
+        
+        { id: 244, text: "У табели су појединачно означени бројевима, симболи електричних компоненти. Упишите одговарајући број симбола (1, 2, 3) поред назива компоненте.",
+          leftItems: ["DC напајање", "Батерија", "АС напајање"],
+          correct: [2, 1, 3], points: 2, type: "matching_old", hasImage: true, imageFile: "244.png" },
+        
+        { id: 245, text: "Поређати кораке за аутоматско креирање садржаја документа у Word-у хронолошким редоследом. Упишите одговарајући редни број (1-5) испред сваког корака.",
+          leftItems: ["Избор формата за приказивање садржаја", "Означавање бројева страница", "Унутар References изабрати Table of Contents", "Постављање показивача на место где се предвиђа садржај", "Избор и форматирање наслова и поднаслова"],
+          correct: [1, 3, 4, 2, 5], points: 3, type: "matching_old", hasImage: false },
+        
+        { id: 246, text: "У техничкој документацији пројекти су означени редним бројем и обавезно сложени у свесци према утврђеном редоследу. Упишите одговарајући редни број (1-10) испред сваког пројекта.",
+          leftItems: ["Архитектура", "Конструкција и други грађевински пројекти", "Хидротехничке инсталације", "Електроенергетске инсталације", "Телекомуникационе и сигналне инсталације", "Машинске инсталације", "Технологија", "Саобраћај и саобраћајна сигнализација", "Спољно уређење са синхрон-планом инсталација и прикључака, пејзажна архитектура и хортикултура", "Припремни радови (рушење, земљани радови, обезбеђење темељне јаме)"],
+          correct: [9, 1, 2, 10, 3, 5, 4, 6, 8, 7], points: 3, type: "matching_old", hasImage: false },
+        
+        { id: 247, text: "При изради пројекта делови пројекта раде се тачним редоследом. Упишите одговарајући редни број (1-6) испред сваког дела пројекта.",
+          leftItems: ["генерални пројекат", "идејно решење", "идејни пројекат", "пројекат за грађевинску дозволу", "пројекат за извођење", "пројекат изведеног стања"],
+          correct: [3, 4, 2, 5, 1, 6], points: 3, type: "matching_old", hasImage: false },
+        
+        { id: 248, text: "На електричној шеми приказаној на слици бројевима (1,2,3,4,5) су означене електричне компоненте. Упишите одговарајући број компоненте (или X ако није на слици) поред назива компоненте.",
+          leftItems: ["Извор наизменичног напона", "Батерија", "Потенциометар", "Фотодиода", "ЛЕ диода", "Уземљење", "Отпорник"],
+          correct: [0, 1, 2, 0, 5, 3, 4], points: 3, type: "matching_old", hasImage: true, imageFile: "248.png" },
+        
+        { id: 249, text: "Предрачун за набавку компоненти описан је сликом. Ове податке треба унети у Excel и форматирати ћелије да се аутоматски израчунава цена набавке при свакој промени података у табели.",
+          leftItems: ["1. =B2*C2", "2. =B4*C4", "3. =C2*D2", "4. =C4*D4", "5. =SUM(E2:E4)", "6. =SUM(E2;E4)"],
+          rightItems: ["Ћелија E2", "Ћелија E3", "Ћелија E4", "Ћелија E6"],
+          correct: [3, 0, 4, 5], points: 3, type: "matching_new", hasImage: true, imageFile: "249.png" },
+        
+        { id: 250, text: "Ћелија маркирана сивом бојом у табели креираној у Word-у (слика 1) форматирана је тако да јој садржај генерише функција описана сликом 2. Упишите одговарајући број (1-4) испред функције којој припада дати резултат.",
+          leftItems: ["1. 6", "2. 9", "3. 3", "4. 12"],
+          rightItems: ["SUM(ABOVE)", "SUM(LEFT)", "SUM(BELOW)", "SUM(RIGHT)"],
+          correct: [2, 3, 1, 4], points: 3, type: "matching_new", hasImage: true, imageFile: "250.png" },
+        
+        { id: 251, text: "У програму за цртање нацртан је модел система са микрорачунаром. Овај цртеж треба пребацити у word документ као слику. Поређајте кораке хронолошким редоследом. Упишите редне бројеве (1-7).",
+          leftItems: ["Стартовати програм Paint", "Print screen нацртаног модела система са микрорачунаром", "Селектовати део слике у Paint-y", "Притиснути CTRL+V на тастатури", "Сор селектованог дела слике у Paint-y", "Снимити обрађену слику у Paint-y", "Инсертовати снимљену слику у Word документ"],
+          correct: [7, 1, 3, 4, 5, 2, 6], points: 4, type: "matching_old", hasImage: false }
+    ];
+
+    let selectedQuestions = [];
+    let userAnswers = {};
+    let timerInterval = null;
+    let timeSeconds = 600;
+    let testActive = true;
+    let testSubmitted = false;
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+        const timerEl = document.getElementById('timerDisplay');
+        if (timerEl) {
+            timerEl.textContent = formatTime(timeSeconds);
+            if (timeSeconds <= 60) {
+                timerEl.classList.add('warning');
+            } else {
+                timerEl.classList.remove('warning');
+            }
+        }
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (!testActive || testSubmitted) return;
+            if (timeSeconds <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                submitTest();
+            } else {
+                timeSeconds--;
+                updateTimerDisplay();
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function getRandomQuestions(count) {
+        const shuffled = [...QUESTIONS_DB];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, count);
+    }
+
+    function renderImage(question) {
+        if (!question.hasImage) return '';
+        
+        if (question.imageFile) {
+            return `<div class="question-image">
+                <img src="${question.imageFile}" alt="Слика уз питање ${question.id}" onerror="this.parentElement.innerHTML='<div class=\'image-placeholder\'>📷 Слика ${question.imageFile} није пронађена. Молимо да је додате у исту фасциклу.</div>'">
+                <div class="image-caption">Слика уз питање ${question.id}</div>
+            </div>`;
+        }
+        return '<div class="question-image"><div class="image-placeholder">📷 [Место за слику]</div></div>';
+    }
+
+    function renderMatchingOldQuestion(question, savedAnswers) {
+        let html = `<div class="matching-hint">📝 Упишите одговарајуће бројеве у поља (бројеви су дати у тексту питања).</div>`;
+        html += `<table class="matching-table">
+            <thead>
+                <tr><th width="60%">Појам / Назив</th><th width="40%">Број (одговор)</th></tr>
+            </thead>
+            <tbody>`;
+        
+        for (let i = 0; i < question.leftItems.length; i++) {
+            const savedValue = savedAnswers && savedAnswers[i] !== undefined ? savedAnswers[i] : '';
+            html += `
+                <tr>
+                    <td>${question.leftItems[i]}</td>
+                    <td>
+                        <input type="text" data-match-index="${i}" value="${savedValue}" placeholder="___" oninput="saveMatchingAnswer(${question.id}, ${i}, this.value)" ${testSubmitted ? 'disabled' : ''}>
+                    </td>
+                </tr>
+            `;
+        }
+        html += `</tbody></table>`;
+        return html;
+    }
+
+    function renderMatchingNewQuestion(question, savedAnswers) {
+        let html = `<div class="matching-hint">📝 Са леве стране су понуђене опције (бројеви 1-${question.leftItems.length}). У поља са десне стране упишите одговарајући број опције.</div>`;
+        html += `<div class="matching-container">`;
+        
+        html += `<div class="options-list"><h4>Понуђене опције:</h4><ul>`;
+        for (let i = 0; i < question.leftItems.length; i++) {
+            html += `<li>${question.leftItems[i]}</li>`;
+        }
+        html += `</ul></div>`;
+        
+        html += `<div class="inputs-table"><h4>Упишите број опције:</h4><table>`;
+        for (let i = 0; i < question.rightItems.length; i++) {
+            const savedValue = savedAnswers && savedAnswers[i] !== undefined ? savedAnswers[i] : '';
+            html += `
+                <tr>
+                    <td><input type="text" data-match-index="${i}" value="${savedValue}" placeholder="број" oninput="saveMatchingNewAnswer(${question.id}, ${i}, this.value)" ${testSubmitted ? 'disabled' : ''}></td>
+                    <td>${question.rightItems[i]}</td>
+                </tr>
+            `;
+        }
+        html += `</table></div></div>`;
+        return html;
+    }
+
+    function renderFillQuestion(question, savedAnswers) {
+        let text = question.text;
+        const parts = text.split(/(______)/g);
+        let blankIndex = 0;
+        
+        let html = `<div class="fill-text">`;
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i] === '______') {
+                const savedValue = savedAnswers && savedAnswers[blankIndex] !== undefined ? savedAnswers[blankIndex] : '';
+                html += `<input type="text" data-blank-index="${blankIndex}" value="${savedValue}" placeholder="___" oninput="saveFillAnswer(${question.id}, ${blankIndex}, this.value)" ${testSubmitted ? 'disabled' : ''}>`;
+                blankIndex++;
+            } else {
+                html += parts[i];
+            }
+        }
+        html += `</div>`;
+        return html;
+    }
+
+    function saveMatchingAnswer(qid, index, value) {
+        if (testSubmitted) return;
+        if (!userAnswers[qid]) userAnswers[qid] = [];
+        userAnswers[qid][index] = value;
+        updateProgress();
+        updateStatusIcon(qid);
+    }
+
+    function saveMatchingNewAnswer(qid, index, value) {
+        if (testSubmitted) return;
+        if (!userAnswers[qid]) userAnswers[qid] = [];
+        userAnswers[qid][index] = value;
+        updateProgress();
+        updateStatusIcon(qid);
+    }
+
+    function saveFillAnswer(qid, blankIndex, value) {
+        if (testSubmitted) return;
+        if (!userAnswers[qid]) userAnswers[qid] = [];
+        userAnswers[qid][blankIndex] = value;
+        updateProgress();
+        updateStatusIcon(qid);
+    }
+
+    function saveAnswer(qid, optIdx, isMultiple) {
+        if (testSubmitted) return;
+        userAnswers[qid] = [optIdx];
+        updateProgress();
+        updateStatusIcon(qid);
+    }
+
+    function saveMultipleAnswer(qid, optIdx) {
+        if (testSubmitted) return;
+        if (!userAnswers[qid]) userAnswers[qid] = [];
+        const current = userAnswers[qid];
+        const index = current.indexOf(optIdx);
+        if (index === -1) {
+            current.push(optIdx);
+        } else {
+            current.splice(index, 1);
+        }
+        userAnswers[qid] = current;
+        updateProgress();
+        updateStatusIcon(qid);
+    }
+
+    function updateStatusIcon(qid) {
+        const card = document.querySelector(`.question-card[data-qid="${qid}"]`);
+        if (!card) return;
+        
+        const question = selectedQuestions.find(q => q.id === qid);
+        if (!question) return;
+        
+        const saved = userAnswers[qid];
+        let isAnswered = false;
+        
+        if (question.type === 'matching_old') {
+            if (saved && saved.length === question.leftItems.length) {
+                isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+            }
+        } else if (question.type === 'matching_new') {
+            if (saved && saved.length === question.rightItems.length) {
+                isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+            }
+        } else if (question.type === 'fill') {
+            const blanksCount = (question.text.match(/______/g) || []).length;
+            if (saved && saved.length === blanksCount) {
+                isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+            }
+        } else {
+            isAnswered = saved !== undefined && saved.length > 0;
+        }
+        
+        const statusDiv = card.querySelector('.answer-status');
+        if (statusDiv) {
+            statusDiv.innerHTML = `<span class="status-icon">${isAnswered ? '✅' : '⭕'}</span><span>${isAnswered ? 'Одговор забележен' : 'Није одговорено'}</span>`;
+        }
+    }
+
+    function handleLabelClick(qid, optIdx) {
+        if (testSubmitted) return;
+        const radios = document.querySelectorAll(`input[name="q${qid}"]`);
+        radios.forEach(radio => {
+            if (parseInt(radio.value) === optIdx) {
+                radio.checked = true;
+                saveAnswer(qid, optIdx, false);
+            }
+        });
+    }
+
+    function handleMultipleClick(qid, optIdx) {
+        if (testSubmitted) return;
+        const checkbox = document.getElementById(`opt_${qid}_${optIdx}`);
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+            saveMultipleAnswer(qid, optIdx);
+        }
+    }
+
+    function calculatePoints(question, answer) {
+        if (!answer || answer.length === 0) return 0;
+        
+        if (question.type === 'single') {
+            return answer[0] === question.correct[0] ? question.points : 0;
+        } else if (question.type === 'multiple') {
+            const correctSet = new Set(question.correct);
+            const answerSet = new Set(answer);
+            let correctCount = 0;
+            for (let a of answerSet) {
+                if (correctSet.has(a)) correctCount++;
+            }
+            const totalCorrect = correctSet.size;
+            const incorrectCount = answerSet.size - correctCount;
+            let points = (correctCount / totalCorrect) * question.points;
+            points = Math.max(0, points - (incorrectCount * (question.points / totalCorrect / 2)));
+            return Math.round(points * 100) / 100;
+        } else if (question.type === 'matching_old' || question.type === 'matching_new') {
+            let correctCount = 0;
+            const correctLength = (question.type === 'matching_old') ? question.leftItems.length : question.rightItems.length;
+            for (let i = 0; i < Math.min(answer.length, correctLength); i++) {
+                const userVal = parseInt(answer[i]);
+                if (!isNaN(userVal) && userVal === question.correct[i]) correctCount++;
+            }
+            return (correctCount / correctLength) * question.points;
+        } else if (question.type === 'fill') {
+            let correctCount = 0;
+            for (let i = 0; i < Math.min(answer.length, question.correct.length); i++) {
+                if (answer[i] && answer[i].toString() === question.correct[i].toString()) {
+                    correctCount++;
+                }
+            }
+            return (correctCount / question.correct.length) * question.points;
+        }
+        return 0;
+    }
+
+    function getUserAnswerText(q, userAnswer) {
+        if (!userAnswer || userAnswer.length === 0) return 'Није одговорено';
+        
+        if (q.type === 'single') {
+            return q.options[userAnswer[0]];
+        } else if (q.type === 'multiple') {
+            return userAnswer.map(i => q.options[i]).join(', ');
+        } else if (q.type === 'matching_old') {
+            const answers = [];
+            for (let i = 0; i < q.leftItems.length; i++) {
+                const val = userAnswer[i];
+                if (val !== undefined && val !== null && val !== '') {
+                    answers.push(`${q.leftItems[i]} → ${val}`);
+                } else {
+                    answers.push(`${q.leftItems[i]} → [није одговорено]`);
+                }
+            }
+            return answers.join('; ');
+        } else if (q.type === 'matching_new') {
+            const answers = [];
+            for (let i = 0; i < q.rightItems.length; i++) {
+                const val = userAnswer[i];
+                if (val !== undefined && val !== null && val !== '') {
+                    answers.push(`${q.rightItems[i]} → ${val}`);
+                } else {
+                    answers.push(`${q.rightItems[i]} → [није одговорено]`);
+                }
+            }
+            return answers.join('; ');
+        } else if (q.type === 'fill') {
+            const answers = [];
+            for (let i = 0; i < userAnswer.length; i++) {
+                answers.push(userAnswer[i] || '[није одговорено]');
+            }
+            return answers.join(', ');
+        }
+        return 'Није одговорено';
+    }
+
+    function getCorrectAnswerText(q) {
+        if (q.type === 'single') {
+            return q.options[q.correct[0]];
+        } else if (q.type === 'multiple') {
+            return q.correct.map(i => q.options[i]).join(', ');
+        } else if (q.type === 'matching_old') {
+            const answers = [];
+            for (let i = 0; i < q.leftItems.length; i++) {
+                answers.push(`${q.leftItems[i]} → ${q.correct[i]}`);
+            }
+            return answers.join('; ');
+        } else if (q.type === 'matching_new') {
+            const answers = [];
+            for (let i = 0; i < q.rightItems.length; i++) {
+                answers.push(`${q.rightItems[i]} → ${q.correct[i]}`);
+            }
+            return answers.join('; ');
+        } else if (q.type === 'fill') {
+            return q.correct.join(', ');
+        }
+        return '';
+    }
+
+    function renderFeedback(question, idx, score, userAnswerText, correctAnswerText, isCorrect) {
+        const statusClass = isCorrect ? 'correct' : 'incorrect';
+        const statusIcon = isCorrect ? '✅' : '❌';
+        const statusText = isCorrect ? 'ТАЧНО' : 'НЕТАЧНО';
+        
+        return `
+            <div class="feedback ${statusClass}">
+                <strong>${statusIcon} ${statusText}</strong> <span style="color:#666;">(${score.toFixed(1)}/${question.points} поена)</span>
+                <div class="answer-text">
+                    <div><strong>Ваш одговор:</strong> ${userAnswerText}</div>
+                    <div><strong>Тачан одговор:</strong> ${correctAnswerText}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTest() {
+        const container = document.getElementById('testContainer');
+        if (!selectedQuestions.length) {
+            selectedQuestions = getRandomQuestions(20);
+            userAnswers = {};
+            testSubmitted = false;
+        }
+        
+        let totalPoints = selectedQuestions.reduce((sum, q) => sum + q.points, 0);
+        
+        let html = `
+            <div class="info-bar">
+                <div class="info-item"><strong>📋 Број питања:</strong> ${selectedQuestions.length}</div>
+                <div class="info-item"><strong>⭐ Укупно поена:</strong> ${totalPoints}</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div class="info-item" id="answeredCount"><strong>✅ Одговорено:</strong> 0 / ${selectedQuestions.length}</div>
+            </div>
+        `;
+        
+        selectedQuestions.forEach((q, idx) => {
+            const saved = userAnswers[q.id];
+            let isAnswered = false;
+            
+            if (q.type === 'matching_old') {
+                if (saved && saved.length === q.leftItems.length) {
+                    isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+                }
+            } else if (q.type === 'matching_new') {
+                if (saved && saved.length === q.rightItems.length) {
+                    isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+                }
+            } else if (q.type === 'fill') {
+                const blanksCount = (q.text.match(/______/g) || []).length;
+                if (saved && saved.length === blanksCount) {
+                    isAnswered = saved.every(v => v !== undefined && v !== null && v !== '');
+                }
+            } else {
+                isAnswered = saved !== undefined && saved.length > 0;
+            }
+            
+            html += `
+                <div class="question-card" data-qid="${q.id}" data-index="${idx}">
+                    <div class="question-header">
+                        <span class="question-num">Питање ${idx + 1}. <span class="question-original-id">(${q.id})</span></span>
+                        <span class="question-points">${q.points} поен${q.points > 1 ? 'а' : ''}</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    ${renderImage(q)}
+            `;
+            
+            if (q.type === 'matching_old') {
+                html += renderMatchingOldQuestion(q, saved);
+            } else if (q.type === 'matching_new') {
+                html += renderMatchingNewQuestion(q, saved);
+            } else if (q.type === 'fill') {
+                html += renderFillQuestion(q, saved);
+            } else if (q.type === 'single') {
+                html += `<ul class="options">`;
+                q.options.forEach((opt, optIdx) => {
+                    const isChecked = saved && saved.includes(optIdx);
+                    html += `
+                        <li onclick="handleLabelClick(${q.id}, ${optIdx})">
+                            <input type="radio" name="q${q.id}" value="${optIdx}" id="opt_${q.id}_${optIdx}"
+                                ${isChecked ? 'checked' : ''}
+                                onchange="saveAnswer(${q.id}, ${optIdx}, false)" ${testSubmitted ? 'disabled' : ''}>
+                            <label for="opt_${q.id}_${optIdx}">${String.fromCharCode(65+optIdx)}. ${opt}</label>
+                        </li>
+                    `;
+                });
+                html += `</ul>`;
+            } else if (q.type === 'multiple') {
+                html += `<ul class="options"><div class="matching-hint">✅ Могуће је више тачних одговора. Обележите све тачне.</div>`;
+                q.options.forEach((opt, optIdx) => {
+                    const isChecked = saved && saved.includes(optIdx);
+                    html += `
+                        <li onclick="handleMultipleClick(${q.id}, ${optIdx})">
+                            <input type="checkbox" name="q${q.id}" value="${optIdx}" id="opt_${q.id}_${optIdx}"
+                                ${isChecked ? 'checked' : ''}
+                                onchange="saveMultipleAnswer(${q.id}, ${optIdx})" ${testSubmitted ? 'disabled' : ''}>
+                            <label for="opt_${q.id}_${optIdx}">${String.fromCharCode(65+optIdx)}. ${opt}</label>
+                        </li>
+                    `;
+                });
+                html += `</ul>`;
+            }
+            
+            html += `
+                    <div class="answer-status">
+                        <span class="status-icon">${isAnswered ? '✅' : '⭕'}</span>
+                        <span>${isAnswered ? 'Одговор забележен' : 'Није одговорено'}</span>
+                    </div>
+            `;
+            
+            // Ako je test predat, prikaži obrazloženje ispod pitanja
+            if (testSubmitted) {
+                let userAnswer = userAnswers[q.id] || [];
+                let parsedAnswer = userAnswer;
+                
+                if (q.type === 'matching_old' || q.type === 'matching_new') {
+                    const length = (q.type === 'matching_old') ? q.leftItems.length : q.rightItems.length;
+                    const parsed = [];
+                    for (let i = 0; i < length; i++) {
+                        const val = parseInt(userAnswer[i]);
+                        parsed.push(isNaN(val) ? -1 : val);
+                    }
+                    parsedAnswer = parsed;
+                }
+                
+                const score = calculatePoints(q, parsedAnswer);
+                const userAnswerText = getUserAnswerText(q, userAnswer);
+                const correctAnswerText = getCorrectAnswerText(q);
+                const isCorrect = Math.abs(score - q.points) < 0.01;
+                
+                html += renderFeedback(q, idx, score, userAnswerText, correctAnswerText, isCorrect);
+            }
+            
+            html += `</div>`;
+        });
+        
+        if (!testSubmitted) {
+            html += `
+                <div class="action-buttons">
+                    <button class="reset-btn" onclick="resetTest()">🔄 Ресетуј све одговоре и тајмер</button>
+                    <button class="submit-btn" onclick="submitTest()">📊 Заврши тест</button>
+                </div>
+            `;
+        } else {
+            // Prikaz konačnog rezultata na dnu
+            let totalScore = 0;
+            let maxPoints = 0;
+            for (let q of selectedQuestions) {
+                maxPoints += q.points;
+                let userAnswer = userAnswers[q.id] || [];
+                let parsedAnswer = userAnswer;
+                if (q.type === 'matching_old' || q.type === 'matching_new') {
+                    const length = (q.type === 'matching_old') ? q.leftItems.length : q.rightItems.length;
+                    const parsed = [];
+                    for (let i = 0; i < length; i++) {
+                        const val = parseInt(userAnswer[i]);
+                        parsed.push(isNaN(val) ? -1 : val);
+                    }
+                    parsedAnswer = parsed;
+                }
+                totalScore += calculatePoints(q, parsedAnswer);
+            }
+            const percentage = (totalScore / maxPoints) * 100;
+            let grade = 1;
+            if (percentage >= 90) grade = 5;
+            else if (percentage >= 75) grade = 4;
+            else if (percentage >= 60) grade = 3;
+            else if (percentage >= 50) grade = 2;
+            
+            let gradeText = '';
+            if (grade === 5) gradeText = 'одличан (5)';
+            else if (grade === 4) gradeText = 'врло добар (4)';
+            else if (grade === 3) gradeText = 'добар (3)';
+            else if (grade === 2) gradeText = 'довољан (2)';
+            else gradeText = 'недовољан (1)';
+            
+            html += `
+                <div class="final-score">
+                    🎓 КОНАЧАН РЕЗУЛТАТ 🎓<br>
+                    <span>${totalScore.toFixed(1)} / ${maxPoints} поена</span><br>
+                    Проценат успеха: ${percentage.toFixed(1)}%<br>
+                    Оцена: ${gradeText}<br>
+                    Време: ${formatTime(600 - timeSeconds)}
+                </div>
+                <div class="action-buttons">
+                    <button class="reset-btn" onclick="fullReset()">🔄 Нови тест</button>
+                </div>
+            `;
+        }
+        
+        html += `<footer>Техничка документација – Заокружите број испред траженог одговора</footer>`;
+        container.innerHTML = html;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        if (testSubmitted) return;
+        
+        let answered = 0;
+        for (let q of selectedQuestions) {
+            const answer = userAnswers[q.id];
+            if (q.type === 'matching_old') {
+                if (answer && answer.length === q.leftItems.length) {
+                    const allFilled = answer.every(v => v !== undefined && v !== null && v !== '');
+                    if (allFilled) answered++;
+                }
+            } else if (q.type === 'matching_new') {
+                if (answer && answer.length === q.rightItems.length) {
+                    const allFilled = answer.every(v => v !== undefined && v !== null && v !== '');
+                    if (allFilled) answered++;
+                }
+            } else if (q.type === 'fill') {
+                const blanksCount = (q.text.match(/______/g) || []).length;
+                if (answer && answer.length === blanksCount) {
+                    const allFilled = answer.every(v => v !== undefined && v !== null && v !== '');
+                    if (allFilled) answered++;
+                }
+            } else {
+                if (answer && answer.length > 0) answered++;
+            }
+        }
+        const total = selectedQuestions.length;
+        const percent = (answered / total) * 100;
+        
+        const progressFill = document.getElementById('progressFill');
+        if (progressFill) progressFill.style.width = percent + '%';
+        
+        const answeredSpan = document.getElementById('answeredCount');
+        if (answeredSpan) answeredSpan.innerHTML = `<strong>✅ Одговорено:</strong> ${answered} / ${total}`;
+    }
+
+    function resetTest() {
+        stopTimer();
+        userAnswers = {};
+        selectedQuestions = getRandomQuestions(20);
+        timeSeconds = 600;
+        testActive = true;
+        testSubmitted = false;
+        updateTimerDisplay();
+        renderTest();
+        startTimer();
+    }
+
+    function fullReset() {
+        stopTimer();
+        userAnswers = {};
+        selectedQuestions = getRandomQuestions(20);
+        timeSeconds = 600;
+        testActive = true;
+        testSubmitted = false;
+        updateTimerDisplay();
+        renderTest();
+        startTimer();
+    }
+
+    function submitTest() {
+        testSubmitted = true;
+        testActive = false;
+        stopTimer();
+        renderTest();
+    }
+
+    window.saveAnswer = saveAnswer;
+    window.saveMultipleAnswer = saveMultipleAnswer;
+    window.saveMatchingAnswer = saveMatchingAnswer;
+    window.saveMatchingNewAnswer = saveMatchingNewAnswer;
+    window.saveFillAnswer = saveFillAnswer;
+    window.resetTest = resetTest;
+    window.submitTest = submitTest;
+    window.fullReset = fullReset;
+    window.handleLabelClick = handleLabelClick;
+    window.handleMultipleClick = handleMultipleClick;
+    
+    selectedQuestions = getRandomQuestions(20);
+    renderTest();
+    startTimer();
+</script>
+</body>
+</html>
