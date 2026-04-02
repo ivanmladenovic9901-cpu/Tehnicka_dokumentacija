@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Tehnička dokumentacija - Maturski ispit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #1a2a4a 0%, #2c3e66 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .header {
+            background: #2c3e66;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .qr-section {
+            padding: 40px 30px;
+            background: white;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #qrcode img, #qrcode canvas {
+            width: 220px;
+            height: 220px;
+            border-radius: 12px;
+        }
+
+        .url-info {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+
+        .url-info p {
+            color: #2c3e66;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .url-info code {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 12px;
+            font-family: monospace;
+            color: #1a2a4a;
+            border: 1px solid #ddd;
+        }
+
+        .instructions {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .instructions h3 {
+            color: #2c3e66;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #2c3e66;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #1a2a4a;
+            transform: scale(1.02);
+        }
+
+        .copy-btn {
+            background: #2e7d32;
+        }
+
+        .copy-btn:hover {
+            background: #1b5e20;
+        }
+
+        .footer {
+            background: #e8e8e0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #856404;
+            text-align: left;
+        }
+
+        @media (max-width: 500px) {
+            .qr-section {
+                padding: 25px 20px;
+            }
+            #qrcode img, #qrcode canvas {
+                width: 180px;
+                height: 180px;
+            }
+            .header h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📱 МАТУРСКИ ИСПИТ</h1>
+        <p>Електротехничар рачунара – Техничка документација</p>
+    </div>
+
+    <div class="qr-section">
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="url-info">
+            <p>🔗 Линк за тест:</p>
+            <code id="testUrl">Учитавање...</code>
+        </div>
+
+        <div class="button-group">
+            <button class="copy-btn" onclick="copyToClipboard()">📋 Копирај линк</button>
+            <button onclick="downloadQR()">⬇️ Преузми QR код</button>
+        </div>
+
+        <div class="instructions">
+            <h3>📖 Како користити:</h3>
+            <ol>
+                <li>Отворите камеру на мобилном телефону</li>
+                <li>Усмерите камеру према QR коду</li>
+                <li>Кликните на линк који се појави на екрану</li>
+                <li>Тест ће се отворити у претраживачу телефона</li>
+            </ol>
+            
+        </div>
+    </div>
+
+    <div class="footer">
+        Техничка документација – Централни испит
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+    let currentUrl = '';
+
+    function getTestUrl() {
+        // Dobijamo trenutnu URL adresu
+        let baseUrl = window.location.href;
+        
+        // Uklanjamo index.html ako postoji na kraju
+        if (baseUrl.endsWith('index.html')) {
+            baseUrl = baseUrl.substring(0, baseUrl.length - 'index.html'.length);
+        } else if (baseUrl.endsWith('/')) {
+            // Ako se završava sa /, ostavljamo
+        } else {
+            // Ako nema / na kraju, dodajemo
+            const lastSlash = baseUrl.lastIndexOf('/');
+            if (lastSlash > 0) {
+                baseUrl = baseUrl.substring(0, lastSlash + 1);
+            }
+        }
+        
+        // Dodajemo test.html
+        return baseUrl + 'test.html';
+    }
+
+    function generateQRCode() {
+        currentUrl = getTestUrl();
+        const urlElement = document.getElementById('testUrl');
+        if (urlElement) {
+            urlElement.textContent = currentUrl;
+        }
+        
+        // Brišemo stari QR kod ako postoji
+        const qrcodeDiv = document.getElementById('qrcode');
+        qrcodeDiv.innerHTML = '';
+        
+        // Kreiramo novi QR kod
+        try {
+            new QRCode(qrcodeDiv, {
+                text: currentUrl,
+                width: 220,
+                height: 220,
+                colorDark: "#2c3e66",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        } catch(e) {
+            console.error('Greška pri kreiranju QR koda:', e);
+            qrcodeDiv.innerHTML = '<div style="padding: 20px; color: red;">Грешка при креирању QR кода. Проверите конзолу.</div>';
+        }
+    }
+
+    function copyToClipboard() {
+        if (currentUrl) {
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ Копирано!';
+                copyBtn.style.background = '#2e7d32';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                alert('Није могуће копирати линк. Ручно га изаберите.');
+            });
+        }
+    }
+
+    function downloadQR() {
+        const qrcodeDiv = document.getElementById('qrcode');
+        const canvas = qrcodeDiv.querySelector('canvas');
+        const img = qrcodeDiv.querySelector('img');
+        
+        let imageData = null;
+        
+        if (canvas) {
+            imageData = canvas.toDataURL('image/png');
+        } else if (img) {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = img.width;
+            tempCanvas.height = img.height;
+            const ctx = tempCanvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            imageData = tempCanvas.toDataURL('image/png');
+        }
+        
+        if (imageData) {
+            const link = document.createElement('a');
+            link.download = 'maturski_test_qr.png';
+            link.href = imageData;
+            link.click();
+        } else {
+            alert('Није могуће преузети QR код.');
+        }
+    }
+
+    // Generišemo QR kod kada se stranica učita
+    window.onload = function() {
+        generateQRCode();
+    };
+</script>
+</body>
+</html>
