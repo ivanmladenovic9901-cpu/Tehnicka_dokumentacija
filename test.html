@@ -810,9 +810,6 @@
         }
         return 0;
     }*/
-// === SAMO IZMENJENI DEO - LOGIKA BODOVANJA ZA MULTIPLE PITANJA ===
-// Zameniti postojeću funkciju calculatePoints sa ovom:
-
 function calculatePoints(question, answer) {
     if (!answer || answer.length === 0) return 0;
     
@@ -820,27 +817,20 @@ function calculatePoints(question, answer) {
         return answer[0] === question.correct[0] ? question.points : 0;
     } 
     else if (question.type === 'multiple') {
-        // NOVA LOGIKA: Ako je bar jedan netačan odgovor → 0 poena
         const correctSet = new Set(question.correct);
         const answerSet = new Set(answer);
         
-        // Provera da li postoji ijedan netačan odgovor
-        let hasIncorrect = false;
+        // Provera: da li postoji MAKAR JEDNA netačna opcija?
         for (let a of answerSet) {
             if (!correctSet.has(a)) {
-                hasIncorrect = true;
-                break;
+                return 0; // Ako ima bar jednu netačnu → 0 poena
             }
         }
         
-        // Ako ima netačnih odgovora → 0 poena
-        if (hasIncorrect) return 0;
-        
-        // Ako su svi odgovori tačni (moguće samo deo tačnih)
+        // Ako su sve izabrane opcije tačne → bodujemo svaku tačnu
         // Svaka tačna opcija vredi: ukupni poeni / broj tačnih opcija
         const pointsPerCorrect = question.points / correctSet.size;
-        const correctCount = answerSet.size; // svi su tačni jer smo proverili
-        return correctCount * pointsPerCorrect;
+        return answerSet.size * pointsPerCorrect;
     } 
     else if (question.type === 'matching_old' || question.type === 'matching_new') {
         let correctCount = 0;
