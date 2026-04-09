@@ -774,7 +774,7 @@
         }
     }
 
-    function calculatePoints(question, answer) {
+ /*   function calculatePoints(question, answer) {
         if (!answer || answer.length === 0) return 0;
         
         if (question.type === 'single') {
@@ -809,8 +809,66 @@
             return (correctCount / question.correct.length) * question.points;
         }
         return 0;
-    }
+    }*/
+// === SAMO IZMENJENI DEO - LOGIKA BODOVANJA ZA MULTIPLE PITANJA ===
+// Zameniti postojeću funkciju calculatePoints sa ovom:
 
+function calculatePoints(question, answer) {
+    if (!answer || answer.length === 0) return 0;
+    
+    if (question.type === 'single') {
+        return answer[0] === question.correct[0] ? question.points : 0;
+    } 
+    else if (question.type === 'multiple') {
+        // NOVA LOGIKA: Ako je bar jedan netačan odgovor → 0 poena
+        const correctSet = new Set(question.correct);
+        const answerSet = new Set(answer);
+        
+        // Provera da li postoji ijedan netačan odgovor
+        let hasIncorrect = false;
+        for (let a of answerSet) {
+            if (!correctSet.has(a)) {
+                hasIncorrect = true;
+                break;
+            }
+        }
+        
+        // Ako ima netačnih odgovora → 0 poena
+        if (hasIncorrect) return 0;
+        
+        // Ako su svi odgovori tačni (moguće samo deo tačnih)
+        // Svaka tačna opcija vredi: ukupni poeni / broj tačnih opcija
+        const pointsPerCorrect = question.points / correctSet.size;
+        const correctCount = answerSet.size; // svi su tačni jer smo proverili
+        return correctCount * pointsPerCorrect;
+    } 
+    else if (question.type === 'matching_old' || question.type === 'matching_new') {
+        let correctCount = 0;
+        const correctLength = (question.type === 'matching_old') ? question.leftItems.length : question.rightItems.length;
+        for (let i = 0; i < Math.min(answer.length, correctLength); i++) {
+            const userVal = parseInt(answer[i]);
+            if (!isNaN(userVal) && userVal === question.correct[i]) correctCount++;
+        }
+        return (correctCount / correctLength) * question.points;
+    } 
+    else if (question.type === 'fill') {
+        let correctCount = 0;
+        for (let i = 0; i < Math.min(answer.length, question.correct.length); i++) {
+            if (answer[i] && answer[i].toString() === question.correct[i].toString()) {
+                correctCount++;
+            }
+        }
+        return (correctCount / question.correct.length) * question.points;
+    }
+    return 0;
+}
+
+// === DODATNO: IZMENJENA FUNKCIJA ZA RENDEROVANJE FEEDBACK-A ===
+// Ova funkcija je već postojala, ali nije menjana - ostaje ista
+// Samo napomena: U delu gde se prikazuje "TAČNO/NETAČNO" sada radi ispravno
+// jer calculatePoints vraća 0 za bilo koji netačan odgovor
+
+// === OSTALE FUNKCIJE (renderTest, saveAnswer, itd.) OSTAJU ISTE ===
     function getUserAnswerText(q, userAnswer) {
         if (!userAnswer || userAnswer.length === 0) return 'Није одговорено';
         
